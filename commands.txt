@@ -1,0 +1,3 @@
+quiz - Generate a new quiz
+difficulty - Set quiz difficulty
+category - Set quiz category

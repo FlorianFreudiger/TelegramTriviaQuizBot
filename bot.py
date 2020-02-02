@@ -14,6 +14,7 @@ logging.debug("Logging enabled")
 def CatIButton(category) -> InlineKeyboardButton:
     return InlineKeyboardButton(str(category), callback_data="category:"+category.name)
 
+
 category_keyboard = [[CatIButton(quiz.QuizCategory.ANY_CATEGORY)],
                      [CatIButton(quiz.QuizCategory.GENERAL_KNOWLEDGE), CatIButton(
                          quiz.QuizCategory.SCIENCE_AND_NATURE), CatIButton(quiz.QuizCategory.MYTHOLOGY)],
@@ -76,7 +77,7 @@ def command_quiz(update: Update, context: CallbackContext):
         pollMessage = context.bot.send_poll(
             update.effective_chat.id, newQuiz.question, answers)
         # Quizzes are not yet availibe in the python-telegram-bot api, for now just send the solution after 90 seconds
-        context.job_queue.run_once(delayedReplyMessage, 90, context=[
+        context.job_queue.run_once(delayedReplyMessage, 60, context=[
                                    pollMessage, "Correct answer: "+str(correctIndex+1)+". option"])
 
     else:
@@ -85,6 +86,8 @@ def command_quiz(update: Update, context: CallbackContext):
 
 def delayedReplyMessage(context: CallbackContext):
     context.job.context[0].reply_text(context.job.context[1])
+    context.bot.stop_poll(
+        context.job.context[0].chat.id, context.job.context[0].message_id)
 
 
 # Callback queries:

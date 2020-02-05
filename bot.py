@@ -50,12 +50,12 @@ def command_start(update: Update, context: CallbackContext):
 
 def command_category(update: Update, context: CallbackContext):
     update.message.reply_text(
-        'Please choose category:', reply_markup=category_reply_markup)
+        'Please choose category:', reply_markup=category_reply_markup, disable_notification=True)
 
 
 def command_difficulty(update: Update, context: CallbackContext):
     update.message.reply_text(
-        'Please choose difficulty:', reply_markup=difficulty_reply_markup)
+        'Please choose difficulty:', reply_markup=difficulty_reply_markup, disable_notification=True)
 
 
 def command_quiz(update: Update, context: CallbackContext):
@@ -85,7 +85,7 @@ def command_quiz(update: Update, context: CallbackContext):
 
 
 def delayedReplyMessage(context: CallbackContext):
-    context.job.context[0].reply_text(context.job.context[1])
+    context.job.context[0].reply_text(context.job.context[1], disable_notification=True)
     context.bot.stop_poll(
         context.job.context[0].chat.id, context.job.context[0].message_id)
 

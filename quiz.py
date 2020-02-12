@@ -98,7 +98,7 @@ class QuizCategory(Enum):
         elif self == QuizCategory.ENTERTAINMENT_JAPANESE_ANIME_AND_MANGA:
             return "Anime & Manga"
         elif self == QuizCategory.ENTERTAINMENT_CARTOON_AND_ANIMATIONS:
-            return "Cartoon & Amimations"
+            return "Cartoon & Animations"
         else:
             return self.name.capitalize()  # pylint: disable=no-member
 

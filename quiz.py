@@ -14,13 +14,13 @@ class QuizDifficulty(Enum):
 
     def __str__(self):
         if self == QuizDifficulty.ANY:
-            return "Any"
+            return "🌈 Any Difficulty"
         elif self == QuizDifficulty.EASY:
-            return "Easy"
+            return "🥉 Easy"
         elif self == QuizDifficulty.MEDIUM:
-            return "Medium"
+            return "🥈 Medium"
         elif self == QuizDifficulty.HARD:
-            return "Hard"
+            return "🥇 Hard"
         else:
             logging.error("QuizDifficulty is weird.")
             return "ERROR"
@@ -35,7 +35,7 @@ class QuizDifficulty(Enum):
         elif self == QuizDifficulty.HARD:
             return "&difficulty=hard"
         else:
-            logging.error("QuizDifficulty is weird.")
+            logging.error("Unknown QuizDifficulty.")
             return ""
 
 
@@ -68,39 +68,58 @@ class QuizCategory(Enum):
 
     def __str__(self):
         if self == QuizCategory.ANY_CATEGORY:
-            return "ANYTHING"
+            return "🌐 ANYTHING"
         elif self == QuizCategory.GENERAL_KNOWLEDGE:
-            return "General knowledge"
+            return "💡 General knowledge"
         elif self == QuizCategory.ENTERTAINMENT_BOOKS:
-            return "Books"
+            return "📚 Books"
         elif self == QuizCategory.ENTERTAINMENT_FILM:
-            return "Film"
+            return "🎬 Film"
         elif self == QuizCategory.ENTERTAINMENT_MUSIC:
-            return "Music"
+            return "🎶 Music"
         elif self == QuizCategory.ENTERTAINMENT_MUSICALS_AND_THEATRES:
-            return "Musicals & Theatres"
+            return "🎭 Theater"
         elif self == QuizCategory.ENTERTAINMENT_TELEVISION:
-            return "TV"
+            return "📺 TV"
         elif self == QuizCategory.ENTERTAINMENT_VIDEO_GAMES:
-            return "Video Games"
+            return "👾 Games"
         elif self == QuizCategory.ENTERTAINMENT_BOARD_GAMES:
-            return "Board Games"
+            return "🎲 Games"
         elif self == QuizCategory.SCIENCE_AND_NATURE:
-            return "Science & Nature"
+            return "🧬 Science&Nature"
         elif self == QuizCategory.SCIENCE_COMPUTERS:
-            return "Computers"
+            return "🖥 Computers"
         elif self == QuizCategory.SCIENCE_MATHEMATICS:
-            return "Mathematics"
+            return "🧮 Math"
+        elif self == QuizCategory.MYTHOLOGY:
+            return "🌩️ Mythology"
+        elif self == QuizCategory.SPORTS:
+            return "⚽ Sports"
+        elif self == QuizCategory.GEOGRAPHY:
+            return "🌍 Geography"
+        elif self == QuizCategory.HISTORY:
+            return "⌛️ History"
+        elif self == QuizCategory.POLITICS:
+            return "🗳️ Politics"
+        elif self == QuizCategory.ART:
+            return "🎨 Art"
+        elif self == QuizCategory.CELEBRITIES:
+            return "👠 Celebrities"
+        elif self == QuizCategory.ANIMALS:
+            return "🐢 Animals"
+        elif self == QuizCategory.VEHICLES:
+            return "🚗 Vehicles"
         elif self == QuizCategory.ENTERTAINMENT_COMICS:
-            return "Comics"
+            return "💭 Comics"
         elif self == QuizCategory.SCIENCE_GADGETS:
-            return "Gadgets"
+            return "📱 Gadgets"
         elif self == QuizCategory.ENTERTAINMENT_JAPANESE_ANIME_AND_MANGA:
-            return "Anime & Manga"
+            return "⛩ Anime&Manga"
         elif self == QuizCategory.ENTERTAINMENT_CARTOON_AND_ANIMATIONS:
-            return "Cartoon & Animations"
+            return "📼 Animations"
         else:
-            return self.name.capitalize()  # pylint: disable=no-member
+            logging.error("Unknown QuizCategory.")
+            return ""
 
     def toUrlPart(self) -> str:
         if self == QuizCategory.ANY_CATEGORY:

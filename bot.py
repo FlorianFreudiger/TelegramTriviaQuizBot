@@ -58,12 +58,12 @@ def command_start(update: Update, context: CallbackContext):
 
 def command_category(update: Update, context: CallbackContext):
     update.message.reply_text(
-        'Please choose category:', reply_markup=category_reply_markup, disable_notification=True)
+        'Please choose a category:', reply_markup=category_reply_markup, disable_notification=True)
 
 
 def command_difficulty(update: Update, context: CallbackContext):
     update.message.reply_text(
-        'Please choose difficulty:', reply_markup=difficulty_reply_markup, disable_notification=True)
+        'Please choose a difficulty:', reply_markup=difficulty_reply_markup, disable_notification=True)
 
 
 def command_quiz(update: Update, context: CallbackContext):
@@ -86,14 +86,15 @@ def command_quiz(update: Update, context: CallbackContext):
             update.effective_chat.id, newQuiz.question, answers)
         # Quizzes are not yet availibe in the python-telegram-bot api, for now just send the solution after 90 seconds
         context.job_queue.run_once(delayedReplyMessage, 60, context=[
-                                   pollMessage, "Correct answer: "+str(correctIndex+1)+". option"])
+                                   pollMessage, "✨ Correct answer: "+str(correctIndex+1)+". option ✨"])
 
     else:
-        update.message.reply_text('Error, cannot create poll.')
+        update.message.reply_text('💥 Error, cannot create poll. 💥')
 
 
 def delayedReplyMessage(context: CallbackContext):
-    context.job.context[0].reply_text(context.job.context[1], disable_notification=True)
+    context.job.context[0].reply_text(
+        context.job.context[1], disable_notification=True)
     context.bot.stop_poll(
         context.job.context[0].chat.id, context.job.context[0].message_id)
 

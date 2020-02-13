@@ -15,21 +15,29 @@ def CatIButton(category) -> InlineKeyboardButton:
     return InlineKeyboardButton(str(category), callback_data="category:"+category.name)
 
 
-category_keyboard = [[CatIButton(quiz.QuizCategory.ANY_CATEGORY)],
-                     [CatIButton(quiz.QuizCategory.GENERAL_KNOWLEDGE), CatIButton(
-                         quiz.QuizCategory.SCIENCE_AND_NATURE), CatIButton(quiz.QuizCategory.MYTHOLOGY)],
+category_keyboard = [[CatIButton(quiz.QuizCategory.ANY_CATEGORY), CatIButton(quiz.QuizCategory.GENERAL_KNOWLEDGE)],
+
+                     [CatIButton(quiz.QuizCategory.SCIENCE_AND_NATURE), CatIButton(
+                         quiz.QuizCategory.ENTERTAINMENT_JAPANESE_ANIME_AND_MANGA)],
+
                      [CatIButton(quiz.QuizCategory.SCIENCE_COMPUTERS), CatIButton(
                          quiz.QuizCategory.SCIENCE_MATHEMATICS), CatIButton(quiz.QuizCategory.SCIENCE_GADGETS)],
+
                      [CatIButton(quiz.QuizCategory.ENTERTAINMENT_BOOKS), CatIButton(
                          quiz.QuizCategory.ENTERTAINMENT_FILM), CatIButton(quiz.QuizCategory.ENTERTAINMENT_MUSIC)],
-                     [CatIButton(quiz.QuizCategory.ENTERTAINMENT_CARTOON_AND_ANIMATIONS), CatIButton(
-                         quiz.QuizCategory.ENTERTAINMENT_JAPANESE_ANIME_AND_MANGA), CatIButton(quiz.QuizCategory.ENTERTAINMENT_MUSICALS_AND_THEATRES)],
+
+                     [CatIButton(quiz.QuizCategory.ENTERTAINMENT_CARTOON_AND_ANIMATIONS), CatIButton(quiz.QuizCategory.MYTHOLOGY), CatIButton(
+                         quiz.QuizCategory.ENTERTAINMENT_MUSICALS_AND_THEATRES)],
+
                      [CatIButton(quiz.QuizCategory.ENTERTAINMENT_BOARD_GAMES), CatIButton(
                          quiz.QuizCategory.ENTERTAINMENT_VIDEO_GAMES), CatIButton(quiz.QuizCategory.ENTERTAINMENT_TELEVISION)],
+
                      [CatIButton(quiz.QuizCategory.ENTERTAINMENT_COMICS), CatIButton(
                          quiz.QuizCategory.ART), CatIButton(quiz.QuizCategory.CELEBRITIES)],
+
                      [CatIButton(quiz.QuizCategory.GEOGRAPHY), CatIButton(
                          quiz.QuizCategory.HISTORY), CatIButton(quiz.QuizCategory.POLITICS)],
+
                      [CatIButton(quiz.QuizCategory.SPORTS), CatIButton(quiz.QuizCategory.ANIMALS), CatIButton(quiz.QuizCategory.VEHICLES)]]
 category_reply_markup = InlineKeyboardMarkup(
     category_keyboard, one_time_keyboard=True)

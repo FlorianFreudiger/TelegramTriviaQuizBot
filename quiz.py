@@ -145,15 +145,19 @@ class Quiz:
             category.toUrlPart() + difficulty.toUrlPart()
         logging.info("Requesting: "+url)
 
-        with urllib.request.urlopen(url) as url:
-            data = json.loads(url.read())
+        try:
+            with urllib.request.urlopen(url) as url:
+                data = json.loads(url.read())
+        except:
+            logging.error("Exception occurred fetching question(s)!")
+            return
 
         logging.info(data)
 
         responseCode = data['response_code']
         if responseCode != 0:
-            logging.error("Response code: "+str(responseCode))
-            return False
+            logging.warning(
+                "Response code: Expected 0 but got "+str(responseCode))
 
         result = data['results'][0]
 
@@ -164,7 +168,7 @@ class Quiz:
         for incorrect_answer in result['incorrect_answers']:
             incorrect_answers.append(html.unescape(incorrect_answer))
 
-        return True, Quiz(result['category'], result['type'], result['difficulty'], question, correct_answer, incorrect_answers)
+        return Quiz(result['category'], result['type'], result['difficulty'], question, correct_answer, incorrect_answers)
 
     def getAnswers(self):
         if self.quizType == 'multiple':

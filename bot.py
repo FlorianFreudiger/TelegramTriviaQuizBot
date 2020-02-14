@@ -77,18 +77,16 @@ def command_quiz(update: Update, context: CallbackContext):
     else:
         difficulty = quiz.QuizDifficulty.ANY
 
-    success, newQuiz = quiz.Quiz.fromInternet(
-        category=category, difficulty=difficulty)
-    if (success):
+    try:
+        newQuiz = quiz.Quiz.fromInternet(category, difficulty)
         answers, correctIndex = newQuiz.getAnswers()
         # https://python-telegram-bot.readthedocs.io/en/stable/telegram.bot.html#telegram.Bot.send_poll
         pollMessage = context.bot.send_poll(
             update.effective_chat.id, newQuiz.question, answers)
-        # Quizzes are not yet availibe in the python-telegram-bot api, for now just send the solution after 90 seconds
+        # Quizzes are not yet available in the python-telegram-bot api, for now just send the solution after 60 seconds
         context.job_queue.run_once(delayedReplyMessage, 60, context=[
                                    pollMessage, "✨ Correct answer: "+str(correctIndex+1)+". option ✨"])
-
-    else:
+    except:
         update.message.reply_text('💥 Error, cannot create poll. 💥')
 
 

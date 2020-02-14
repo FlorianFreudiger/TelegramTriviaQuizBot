@@ -3,9 +3,10 @@ import json
 import html
 import random
 import urllib.request
-from enum import Enum
+from enum import Enum, unique
 
 
+@unique
 class QuizDifficulty(Enum):
     ANY = -1
     EASY = 0
@@ -39,6 +40,7 @@ class QuizDifficulty(Enum):
             return ""
 
 
+@unique
 class QuizCategory(Enum):
     ANY_CATEGORY = 0
     GENERAL_KNOWLEDGE = 9
@@ -147,7 +149,7 @@ class Quiz:
             data = json.loads(url.read())
 
         logging.info(data)
-        
+
         responseCode = data['response_code']
         if responseCode != 0:
             logging.error("Response code: "+str(responseCode))

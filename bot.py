@@ -67,14 +67,14 @@ def command_difficulty(update: Update, context: CallbackContext):
 
 
 def command_quiz(update: Update, context: CallbackContext):
-    if "category" in context.chat_data:
+    try:
         category = context.chat_data["category"]
-    else:
+    except KeyError:
         category = quiz.QuizCategory.ANY_CATEGORY
 
-    if "difficulty" in context.chat_data:
+    try:
         difficulty = context.chat_data["difficulty"]
-    else:
+    except KeyError:
         difficulty = quiz.QuizDifficulty.ANY
 
     try:

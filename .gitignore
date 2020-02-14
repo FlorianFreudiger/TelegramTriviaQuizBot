@@ -134,3 +134,6 @@ secret.py
 
 # Bot log
 *.log
+
+# Visual studio code files
+.vscode/

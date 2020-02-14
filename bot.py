@@ -11,40 +11,40 @@ logging.debug("Logging enabled")
 
 # InlineKeyboards:
 
-def CatIButton(category) -> InlineKeyboardButton:
-    return InlineKeyboardButton(str(category), callback_data="category:"+category.name)
+def InlineButtonFromEnum(enum) -> InlineKeyboardButton:
+    return InlineKeyboardButton(str(enum), callback_data=enum.__class__.__name__+":"+enum.name)
 
 
-category_keyboard = [[CatIButton(quiz.QuizCategory.ANY_CATEGORY), CatIButton(quiz.QuizCategory.GENERAL_KNOWLEDGE)],
+category_keyboard = [[InlineButtonFromEnum(quiz.QuizCategory.ANY_CATEGORY), InlineButtonFromEnum(quiz.QuizCategory.GENERAL_KNOWLEDGE)],
 
-                     [CatIButton(quiz.QuizCategory.SCIENCE_AND_NATURE), CatIButton(
+                     [InlineButtonFromEnum(quiz.QuizCategory.SCIENCE_AND_NATURE), InlineButtonFromEnum(
                          quiz.QuizCategory.ENTERTAINMENT_JAPANESE_ANIME_AND_MANGA)],
 
-                     [CatIButton(quiz.QuizCategory.SCIENCE_COMPUTERS), CatIButton(
-                         quiz.QuizCategory.SCIENCE_MATHEMATICS), CatIButton(quiz.QuizCategory.SCIENCE_GADGETS)],
+                     [InlineButtonFromEnum(quiz.QuizCategory.SCIENCE_COMPUTERS), InlineButtonFromEnum(
+                         quiz.QuizCategory.SCIENCE_MATHEMATICS), InlineButtonFromEnum(quiz.QuizCategory.SCIENCE_GADGETS)],
 
-                     [CatIButton(quiz.QuizCategory.ENTERTAINMENT_BOOKS), CatIButton(
-                         quiz.QuizCategory.ENTERTAINMENT_FILM), CatIButton(quiz.QuizCategory.ENTERTAINMENT_MUSIC)],
+                     [InlineButtonFromEnum(quiz.QuizCategory.ENTERTAINMENT_BOOKS), InlineButtonFromEnum(
+                         quiz.QuizCategory.ENTERTAINMENT_FILM), InlineButtonFromEnum(quiz.QuizCategory.ENTERTAINMENT_MUSIC)],
 
-                     [CatIButton(quiz.QuizCategory.ENTERTAINMENT_CARTOON_AND_ANIMATIONS), CatIButton(quiz.QuizCategory.MYTHOLOGY), CatIButton(
+                     [InlineButtonFromEnum(quiz.QuizCategory.ENTERTAINMENT_CARTOON_AND_ANIMATIONS), InlineButtonFromEnum(quiz.QuizCategory.MYTHOLOGY), InlineButtonFromEnum(
                          quiz.QuizCategory.ENTERTAINMENT_MUSICALS_AND_THEATRES)],
 
-                     [CatIButton(quiz.QuizCategory.ENTERTAINMENT_BOARD_GAMES), CatIButton(
-                         quiz.QuizCategory.ENTERTAINMENT_VIDEO_GAMES), CatIButton(quiz.QuizCategory.ENTERTAINMENT_TELEVISION)],
+                     [InlineButtonFromEnum(quiz.QuizCategory.ENTERTAINMENT_BOARD_GAMES), InlineButtonFromEnum(
+                         quiz.QuizCategory.ENTERTAINMENT_VIDEO_GAMES), InlineButtonFromEnum(quiz.QuizCategory.ENTERTAINMENT_TELEVISION)],
 
-                     [CatIButton(quiz.QuizCategory.ENTERTAINMENT_COMICS), CatIButton(
-                         quiz.QuizCategory.ART), CatIButton(quiz.QuizCategory.CELEBRITIES)],
+                     [InlineButtonFromEnum(quiz.QuizCategory.ENTERTAINMENT_COMICS), InlineButtonFromEnum(
+                         quiz.QuizCategory.ART), InlineButtonFromEnum(quiz.QuizCategory.CELEBRITIES)],
 
-                     [CatIButton(quiz.QuizCategory.GEOGRAPHY), CatIButton(
-                         quiz.QuizCategory.HISTORY), CatIButton(quiz.QuizCategory.POLITICS)],
+                     [InlineButtonFromEnum(quiz.QuizCategory.GEOGRAPHY), InlineButtonFromEnum(
+                         quiz.QuizCategory.HISTORY), InlineButtonFromEnum(quiz.QuizCategory.POLITICS)],
 
-                     [CatIButton(quiz.QuizCategory.SPORTS), CatIButton(quiz.QuizCategory.ANIMALS), CatIButton(quiz.QuizCategory.VEHICLES)]]
+                     [InlineButtonFromEnum(quiz.QuizCategory.SPORTS), InlineButtonFromEnum(quiz.QuizCategory.ANIMALS), InlineButtonFromEnum(quiz.QuizCategory.VEHICLES)]]
 category_reply_markup = InlineKeyboardMarkup(
     category_keyboard, one_time_keyboard=True)
 
 
-difficulty_keyboard = [[InlineKeyboardButton("Any Difficulty", callback_data="difficulty:-1")],
-                       [InlineKeyboardButton("Easy", callback_data="difficulty:0"), InlineKeyboardButton("Medium", callback_data="difficulty:1"), InlineKeyboardButton("Hard", callback_data="difficulty:2")]]
+difficulty_keyboard = [[InlineButtonFromEnum(quiz.QuizDifficulty.ANY)],
+                       [InlineButtonFromEnum(quiz.QuizDifficulty.EASY), InlineButtonFromEnum(quiz.QuizDifficulty.MEDIUM), InlineButtonFromEnum(quiz.QuizDifficulty.HARD)]]
 difficulty_reply_markup = InlineKeyboardMarkup(
     difficulty_keyboard, one_time_keyboard=True)
 
@@ -104,15 +104,15 @@ def delayedReplyMessage(context: CallbackContext):
 def callbackQueryFunction(update: Update, context: CallbackContext):
     query = update.callback_query
 
-    if query.data.startswith("category:"):
-        category = quiz.QuizCategory[query.data[9:]]
+    if query.data.startswith("QuizCategory:"):
+        category = quiz.QuizCategory[query.data[13:]]
         context.chat_data["category"] = category
-        query.edit_message_text("Quiz category set to "+str(category))
+        query.edit_message_text("Quiz category set to " + str(category))
 
-    elif query.data.startswith("difficulty:"):
-        difficulty = quiz.QuizDifficulty(int(query.data[11:]))
+    elif query.data.startswith("QuizDifficulty:"):
+        difficulty = quiz.QuizDifficulty[query.data[15:]]
         context.chat_data["difficulty"] = difficulty
-        query.edit_message_text("Quiz difficulty set to "+str(difficulty))
+        query.edit_message_text("Quiz difficulty set to " + str(difficulty))
 
     else:
         logging.warning("Unknown callback query: "+query.data)

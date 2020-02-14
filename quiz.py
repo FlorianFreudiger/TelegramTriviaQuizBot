@@ -23,7 +23,7 @@ class QuizDifficulty(Enum):
         elif self == QuizDifficulty.HARD:
             return "🥇 Hard"
         else:
-            logging.error("QuizDifficulty is weird.")
+            logging.error("Unknown QuizDifficulty.")
             return "ERROR"
 
     def toUrlPart(self) -> str:

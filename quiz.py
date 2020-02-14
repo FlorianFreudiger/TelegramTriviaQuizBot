@@ -1,9 +1,11 @@
+from __future__ import annotations
 import logging
 import json
 import html
 import random
 import urllib.request
 from enum import Enum, unique
+from typing import List
 
 
 @unique
@@ -13,7 +15,7 @@ class QuizDifficulty(Enum):
     MEDIUM = 1
     HARD = 2
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self == QuizDifficulty.ANY:
             return "🌈 Any Difficulty"
         elif self == QuizDifficulty.EASY:
@@ -68,7 +70,7 @@ class QuizCategory(Enum):
     ENTERTAINMENT_JAPANESE_ANIME_AND_MANGA = 31
     ENTERTAINMENT_CARTOON_AND_ANIMATIONS = 32
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self == QuizCategory.ANY_CATEGORY:
             return "🌐 ANYTHING"
         elif self == QuizCategory.GENERAL_KNOWLEDGE:
@@ -140,7 +142,7 @@ class Quiz:
         self.incorrectAnswers = incorrectAnswers
 
     @staticmethod
-    def fromInternet(category=QuizCategory.ANY_CATEGORY, difficulty=QuizDifficulty.ANY):
+    def fromInternet(category=QuizCategory.ANY_CATEGORY, difficulty=QuizDifficulty.ANY) -> Quiz:
         url = "https://opentdb.com/api.php?amount=1" + \
             category.toUrlPart() + difficulty.toUrlPart()
         logging.info("Requesting: "+url)
@@ -170,7 +172,7 @@ class Quiz:
 
         return Quiz(result['category'], result['type'], result['difficulty'], question, correct_answer, incorrect_answers)
 
-    def getAnswers(self):
+    def getAnswers(self) -> Tuple[List[str], int]:
         if self.quizType == 'multiple':
             answers = self.incorrectAnswers[:]
             random.shuffle(answers)

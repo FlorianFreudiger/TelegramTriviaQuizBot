@@ -133,7 +133,7 @@ class QuizCategory(Enum):
 
 
 class Quiz:
-    def __init__(self, category: QuizCategory, quizType: int, difficulty: QuizDifficulty, question: str, correctAnswer: str, incorrectAnswers):
+    def __init__(self, category: QuizCategory, quizType: int, difficulty: QuizDifficulty, question: str, correctAnswer: str, incorrectAnswers: List[str]):
         self.category = category
         self.quizType = quizType
         self.difficulty = difficulty

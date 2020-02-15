@@ -71,65 +71,44 @@ class QuizCategory(Enum):
     ENTERTAINMENT_CARTOON_AND_ANIMATIONS = 32
 
     def __str__(self) -> str:
-        if self == QuizCategory.ANY_CATEGORY:
-            return "🌐 ANYTHING"
-        elif self == QuizCategory.GENERAL_KNOWLEDGE:
-            return "💡 General knowledge"
-        elif self == QuizCategory.ENTERTAINMENT_BOOKS:
-            return "📚 Books"
-        elif self == QuizCategory.ENTERTAINMENT_FILM:
-            return "🎬 Film"
-        elif self == QuizCategory.ENTERTAINMENT_MUSIC:
-            return "🎶 Music"
-        elif self == QuizCategory.ENTERTAINMENT_MUSICALS_AND_THEATRES:
-            return "🎭 Theater"
-        elif self == QuizCategory.ENTERTAINMENT_TELEVISION:
-            return "📺 TV"
-        elif self == QuizCategory.ENTERTAINMENT_VIDEO_GAMES:
-            return "👾 Games"
-        elif self == QuizCategory.ENTERTAINMENT_BOARD_GAMES:
-            return "🎲 Games"
-        elif self == QuizCategory.SCIENCE_AND_NATURE:
-            return "🧬 Science&Nature"
-        elif self == QuizCategory.SCIENCE_COMPUTERS:
-            return "🖥 Computers"
-        elif self == QuizCategory.SCIENCE_MATHEMATICS:
-            return "🧮 Math"
-        elif self == QuizCategory.MYTHOLOGY:
-            return "🌩️ Mythology"
-        elif self == QuizCategory.SPORTS:
-            return "⚽ Sports"
-        elif self == QuizCategory.GEOGRAPHY:
-            return "🌍 Geography"
-        elif self == QuizCategory.HISTORY:
-            return "⌛️ History"
-        elif self == QuizCategory.POLITICS:
-            return "🗳️ Politics"
-        elif self == QuizCategory.ART:
-            return "🎨 Art"
-        elif self == QuizCategory.CELEBRITIES:
-            return "👠 Celebrities"
-        elif self == QuizCategory.ANIMALS:
-            return "🐢 Animals"
-        elif self == QuizCategory.VEHICLES:
-            return "🚗 Vehicles"
-        elif self == QuizCategory.ENTERTAINMENT_COMICS:
-            return "💭 Comics"
-        elif self == QuizCategory.SCIENCE_GADGETS:
-            return "📱 Gadgets"
-        elif self == QuizCategory.ENTERTAINMENT_JAPANESE_ANIME_AND_MANGA:
-            return "⛩ Anime&Manga"
-        elif self == QuizCategory.ENTERTAINMENT_CARTOON_AND_ANIMATIONS:
-            return "📼 Animations"
-        else:
-            logging.error("Unknown QuizCategory.")
-            return ""
+        try:
+            return QuizCategoryToStr_dict[self]
+        except KeyError:
+            logging.error("QuizCategoryToStr_dict does not contain " + super().__str__())
+            return "Error converting QuizCategory enum to string"
 
     def toUrlPart(self) -> str:
         if self == QuizCategory.ANY_CATEGORY:
             return ""
         else:
             return "&category="+str(self.value)
+
+
+QuizCategoryToStr_dict = {QuizCategory.ANY_CATEGORY: "🌐 ANYTHING",
+                          QuizCategory.GENERAL_KNOWLEDGE: "💡 General knowledge",
+                          QuizCategory.ENTERTAINMENT_BOOKS: "📚 Books",
+                          QuizCategory.ENTERTAINMENT_FILM: "🎬 Film",
+                          QuizCategory.ENTERTAINMENT_MUSIC: "🎶 Music",
+                          QuizCategory.ENTERTAINMENT_MUSICALS_AND_THEATRES: "🎭 Theater",
+                          QuizCategory.ENTERTAINMENT_TELEVISION: "📺 TV",
+                          QuizCategory.ENTERTAINMENT_VIDEO_GAMES: "👾 Games",
+                          QuizCategory.ENTERTAINMENT_BOARD_GAMES: "🎲 Games",
+                          QuizCategory.SCIENCE_AND_NATURE: "🧬 Science&Nature",
+                          QuizCategory.SCIENCE_COMPUTERS: "🖥 Computers",
+                          QuizCategory.SCIENCE_MATHEMATICS: "🧮 Math",
+                          QuizCategory.MYTHOLOGY: "🌩️ Mythology",
+                          QuizCategory.SPORTS: "⚽ Sports",
+                          QuizCategory.GEOGRAPHY: "🌍 Geography",
+                          QuizCategory.HISTORY: "⌛️ History",
+                          QuizCategory.POLITICS: "🗳️ Politics",
+                          QuizCategory.ART: "🎨 Art",
+                          QuizCategory.CELEBRITIES: "👠 Celebrities",
+                          QuizCategory.ANIMALS: "🐢 Animals",
+                          QuizCategory.VEHICLES: "🚗 Vehicles",
+                          QuizCategory.ENTERTAINMENT_COMICS: "💭 Comics",
+                          QuizCategory.SCIENCE_GADGETS: "📱 Gadgets",
+                          QuizCategory.ENTERTAINMENT_JAPANESE_ANIME_AND_MANGA: "⛩ Anime&Manga",
+                          QuizCategory.ENTERTAINMENT_CARTOON_AND_ANIMATIONS: "📼 Animations"}
 
 
 class Quiz:

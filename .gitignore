@@ -137,3 +137,6 @@ secret.py
 
 # Visual studio code files
 .vscode/
+
+# Bot persistence
+data.pickle

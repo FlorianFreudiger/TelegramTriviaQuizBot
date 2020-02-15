@@ -1,6 +1,6 @@
 import logging
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import Updater, CommandHandler, CallbackContext, CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler, CallbackContext, CallbackQueryHandler, PicklePersistence
 import quiz
 import secret
 
@@ -117,9 +117,12 @@ def callbackQueryFunction(update: Update, context: CallbackContext):
         query.answer()
 
 
+# Create Persistence
+bot_persistence = PicklePersistence(filename='data.pickle')
+
 logging.info("Starting bot...")
 # Create the EventHandler and pass it your bot's token.
-updater = Updater(token=secret.api_key(), use_context=True)
+updater = Updater(token=secret.api_key(), use_context=True, persistence=bot_persistence)
 
 # Get the dispatcher to register handlers
 dispatcher = updater.dispatcher

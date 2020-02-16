@@ -79,10 +79,11 @@ def command_quiz(update: Update, context: CallbackContext):
 
     try:
         newQuiz = quiz.Quiz.fromInternet(category, difficulty)
+        title = str(newQuiz.category) + "  - " + str(newQuiz.difficulty) + "\n" + newQuiz.question
         answers, correctIndex = newQuiz.getAnswers()
         # https://python-telegram-bot.readthedocs.io/en/stable/telegram.bot.html#telegram.Bot.send_poll
         pollMessage = context.bot.send_poll(
-            update.effective_chat.id, newQuiz.question, answers)
+            update.effective_chat.id, title, answers)
         # Quizzes are not yet available in the python-telegram-bot api, for now just send the solution after 60 seconds
         context.job_queue.run_once(delayedReplyMessage, 60, context=[
                                    pollMessage, "✨ Correct answer: "+str(correctIndex+1)+". option ✨"])

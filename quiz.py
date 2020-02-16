@@ -10,10 +10,10 @@ from typing import List
 
 @unique
 class QuizDifficulty(Enum):
-    ANY = -1
-    EASY = 0
-    MEDIUM = 1
-    HARD = 2
+    ANY = ""
+    EASY = "easy"
+    MEDIUM = "medium"
+    HARD = "hard"
 
     def __str__(self) -> str:
         if self == QuizDifficulty.ANY:
@@ -40,6 +40,13 @@ class QuizDifficulty(Enum):
         else:
             logging.error("Unknown QuizDifficulty.")
             return ""
+
+    @staticmethod
+    def fromString(string: str) -> QuizDifficulty:
+        try:
+            return QuizDifficulty(string)
+        except KeyError:
+            logging.error("Could not convert String " + string + " to QuizDifficulty")
 
 
 @unique
@@ -83,32 +90,67 @@ class QuizCategory(Enum):
         else:
             return "&category="+str(self.value)
 
+    @staticmethod
+    def fromOpenTbdString(string: str) -> QuizCategory:
+        try:
+            return OpenTbdStringToQuizCategory_dict[string]
+        except KeyError:
+            logging.error("OpenTbdStringToQuizCategory_dict does not contain " + string)
 
-QuizCategoryToStr_dict = {QuizCategory.ANY_CATEGORY: "🌐 ANYTHING",
-                          QuizCategory.GENERAL_KNOWLEDGE: "💡 General knowledge",
-                          QuizCategory.ENTERTAINMENT_BOOKS: "📚 Books",
-                          QuizCategory.ENTERTAINMENT_FILM: "🎬 Film",
-                          QuizCategory.ENTERTAINMENT_MUSIC: "🎶 Music",
-                          QuizCategory.ENTERTAINMENT_MUSICALS_AND_THEATRES: "🎭 Theater",
-                          QuizCategory.ENTERTAINMENT_TELEVISION: "📺 TV",
-                          QuizCategory.ENTERTAINMENT_VIDEO_GAMES: "👾 Games",
-                          QuizCategory.ENTERTAINMENT_BOARD_GAMES: "🎲 Games",
-                          QuizCategory.SCIENCE_AND_NATURE: "🧬 Science&Nature",
-                          QuizCategory.SCIENCE_COMPUTERS: "🖥 Computers",
-                          QuizCategory.SCIENCE_MATHEMATICS: "🧮 Math",
-                          QuizCategory.MYTHOLOGY: "🌩️ Mythology",
-                          QuizCategory.SPORTS: "⚽ Sports",
-                          QuizCategory.GEOGRAPHY: "🌍 Geography",
-                          QuizCategory.HISTORY: "⌛️ History",
-                          QuizCategory.POLITICS: "🗳️ Politics",
-                          QuizCategory.ART: "🎨 Art",
-                          QuizCategory.CELEBRITIES: "👠 Celebrities",
-                          QuizCategory.ANIMALS: "🐢 Animals",
-                          QuizCategory.VEHICLES: "🚗 Vehicles",
-                          QuizCategory.ENTERTAINMENT_COMICS: "💭 Comics",
-                          QuizCategory.SCIENCE_GADGETS: "📱 Gadgets",
-                          QuizCategory.ENTERTAINMENT_JAPANESE_ANIME_AND_MANGA: "⛩ Anime&Manga",
-                          QuizCategory.ENTERTAINMENT_CARTOON_AND_ANIMATIONS: "📼 Animations"}
+
+QuizCategoryToStr_dict = \
+    {QuizCategory.ANY_CATEGORY: "🌐 ANYTHING",
+     QuizCategory.GENERAL_KNOWLEDGE: "💡 General knowledge",
+     QuizCategory.ENTERTAINMENT_BOOKS: "📚 Books",
+     QuizCategory.ENTERTAINMENT_FILM: "🎬 Film",
+     QuizCategory.ENTERTAINMENT_MUSIC: "🎶 Music",
+     QuizCategory.ENTERTAINMENT_MUSICALS_AND_THEATRES: "🎭 Theater",
+     QuizCategory.ENTERTAINMENT_TELEVISION: "📺 TV",
+     QuizCategory.ENTERTAINMENT_VIDEO_GAMES: "👾 Games",
+     QuizCategory.ENTERTAINMENT_BOARD_GAMES: "🎲 Games",
+     QuizCategory.SCIENCE_AND_NATURE: "🧬 Science&Nature",
+     QuizCategory.SCIENCE_COMPUTERS: "🖥 Computers",
+     QuizCategory.SCIENCE_MATHEMATICS: "🧮 Math",
+     QuizCategory.MYTHOLOGY: "🌩️ Mythology",
+     QuizCategory.SPORTS: "⚽ Sports",
+     QuizCategory.GEOGRAPHY: "🌍 Geography",
+     QuizCategory.HISTORY: "⌛️ History",
+     QuizCategory.POLITICS: "🗳️ Politics",
+     QuizCategory.ART: "🎨 Art",
+     QuizCategory.CELEBRITIES: "👠 Celebrities",
+     QuizCategory.ANIMALS: "🐢 Animals",
+     QuizCategory.VEHICLES: "🚗 Vehicles",
+     QuizCategory.ENTERTAINMENT_COMICS: "💭 Comics",
+     QuizCategory.SCIENCE_GADGETS: "📱 Gadgets",
+     QuizCategory.ENTERTAINMENT_JAPANESE_ANIME_AND_MANGA: "⛩ Anime&Manga",
+     QuizCategory.ENTERTAINMENT_CARTOON_AND_ANIMATIONS: "📼 Animations"}
+
+OpenTbdStringToQuizCategory_dict = \
+    {"Any Category":  QuizCategory.ANY_CATEGORY,
+     "General Knowledge": QuizCategory.GENERAL_KNOWLEDGE,
+     "Entertainment: Books": QuizCategory.ENTERTAINMENT_BOOKS,
+     "Entertainment: Film": QuizCategory.ENTERTAINMENT_FILM,
+     "Entertainment: Music": QuizCategory.ENTERTAINMENT_MUSIC,
+     "Entertainment: Musicals & Theatres": QuizCategory.ENTERTAINMENT_MUSICALS_AND_THEATRES,
+     "Entertainment: Television": QuizCategory.ENTERTAINMENT_TELEVISION,
+     "Entertainment: Video Games": QuizCategory.ENTERTAINMENT_VIDEO_GAMES,
+     "Entertainment: Board Games": QuizCategory.ENTERTAINMENT_BOARD_GAMES,
+     "Science & Nature": QuizCategory.SCIENCE_AND_NATURE,
+     "Science: Computers": QuizCategory.SCIENCE_COMPUTERS,
+     "Science: Mathematics": QuizCategory.SCIENCE_MATHEMATICS,
+     "Mythology": QuizCategory.MYTHOLOGY,
+     "Sports": QuizCategory.SPORTS,
+     "Geography": QuizCategory.GEOGRAPHY,
+     "History": QuizCategory.HISTORY,
+     "Politics": QuizCategory.POLITICS,
+     "Art": QuizCategory.ART,
+     "Celebrities": QuizCategory.CELEBRITIES,
+     "Animals": QuizCategory.ANIMALS,
+     "Vehicles": QuizCategory.VEHICLES,
+     "Entertainment: Comics": QuizCategory.ENTERTAINMENT_COMICS,
+     "Science: Gadgets": QuizCategory.SCIENCE_GADGETS,
+     "Entertainment: Japanese Anime & Manga": QuizCategory.ENTERTAINMENT_JAPANESE_ANIME_AND_MANGA,
+     "Entertainment: Cartoon & Animations":  QuizCategory.ENTERTAINMENT_CARTOON_AND_ANIMATIONS}
 
 
 class Quiz:
@@ -122,8 +164,7 @@ class Quiz:
 
     @staticmethod
     def fromInternet(category=QuizCategory.ANY_CATEGORY, difficulty=QuizDifficulty.ANY) -> Quiz:
-        url = "https://opentdb.com/api.php?amount=1" + \
-            category.toUrlPart() + difficulty.toUrlPart()
+        url = "https://opentdb.com/api.php?amount=1" + category.toUrlPart() + difficulty.toUrlPart()
         logging.info("Requesting: "+url)
 
         try:
@@ -137,8 +178,7 @@ class Quiz:
 
         responseCode = data['response_code']
         if responseCode != 0:
-            logging.warning(
-                "Response code: Expected 0 but got "+str(responseCode))
+            logging.warning("Response code: Expected 0 but got " + str(responseCode))
 
         result = data['results'][0]
 
@@ -149,7 +189,12 @@ class Quiz:
         for incorrect_answer in result['incorrect_answers']:
             incorrect_answers.append(html.unescape(incorrect_answer))
 
-        return Quiz(result['category'], result['type'], result['difficulty'], question, correct_answer, incorrect_answers)
+        return Quiz(QuizCategory.fromOpenTbdString(result['category']),
+                    result['type'],
+                    QuizDifficulty.fromString(result['difficulty']),
+                    question,
+                    correct_answer,
+                    incorrect_answers)
 
     def getAnswers(self) -> Tuple[List[str], int]:
         if self.quizType == 'multiple':

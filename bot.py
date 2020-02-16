@@ -87,8 +87,9 @@ def command_quiz(update: Update, context: CallbackContext):
         # Quizzes are not yet available in the python-telegram-bot api, for now just send the solution after 60 seconds
         context.job_queue.run_once(delayedReplyMessage, 60, context=[
                                    pollMessage, "✨ Correct answer: "+str(correctIndex+1)+". option ✨"])
-    except:
-        update.message.reply_text('💥 Error, cannot create poll. 💥')
+    except Exception as exception:
+        logging.error(exception)
+        update.message.reply_text('💥 Error, could not create poll. 💥')
 
 
 def delayedReplyMessage(context: CallbackContext):

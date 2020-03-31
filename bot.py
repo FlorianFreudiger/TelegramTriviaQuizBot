@@ -1,5 +1,5 @@
 import logging
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, Poll
 from telegram.ext import Updater, CommandHandler, CallbackContext, CallbackQueryHandler, PicklePersistence
 import quiz
 import secret
@@ -79,24 +79,18 @@ def command_quiz(update: Update, context: CallbackContext):
 
     try:
         newQuiz = quiz.Quiz.fromInternet(category, difficulty)
-        title = str(newQuiz.category) + "  - " + str(newQuiz.difficulty) + "\n" + newQuiz.question
+        question = str(newQuiz.category) + "  - " + str(newQuiz.difficulty) + "\n" + newQuiz.question
         answers, correctIndex = newQuiz.getAnswers()
         # https://python-telegram-bot.readthedocs.io/en/stable/telegram.bot.html#telegram.Bot.send_poll
-        pollMessage = context.bot.send_poll(
-            update.effective_chat.id, title, answers)
-        # Quizzes are not yet available in the python-telegram-bot api, for now just send the solution after 60 seconds
-        context.job_queue.run_once(delayedReplyMessage, 60, context=[
-                                   pollMessage, "✨ Correct answer: "+str(correctIndex+1)+". option ✨"])
+        pollMessage = context.bot.send_poll(update.effective_chat.id,
+                                            question=question,
+                                            options=answers,
+                                            is_anonymous=False,
+                                            type=Poll.QUIZ,
+                                            correct_option_id=correctIndex)
     except Exception as exception:
         logging.error(exception)
         update.message.reply_text('💥 Error, could not create poll. 💥')
-
-
-def delayedReplyMessage(context: CallbackContext):
-    context.job.context[0].reply_text(
-        context.job.context[1], disable_notification=True)
-    context.bot.stop_poll(
-        context.job.context[0].chat.id, context.job.context[0].message_id)
 
 
 # Callback queries:
